@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Natural.h"
-#include <string>
 using namespace std;
 
 Natural factorial(const Natural& n)
@@ -19,7 +18,8 @@ int main()
     Natural n;
     Natural a;
     Natural b;
-    /*while (true) { 
+    cout << m + (-10);
+    while (true) { 
         (cin >> m) >> n;
         a = m, b = n;
         cout << m << ' ' << n << '\n';
@@ -31,7 +31,7 @@ int main()
         cout << "m > n : " << (m > n) << '\n';
         cout << "m - n : " << (m -= n) << '\n';
         cout << "m \% n : " << (a %= b) << '\n';
-    }*/
-    cout << factorial(10000);
+    }
+    cout << factorial(1000);
     return 0;
 }
