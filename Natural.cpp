@@ -286,12 +286,12 @@ Natural Natural::operator--(int a) {
   return tmp;
 }
 
-Natural Natural::operator%(const Natural& m) {
+Natural Natural::operator%(const Natural& m) const {
   Natural temp = *this;
   return temp %= m;
 }
 
-Natural Natural::operator/(const Natural& m) {
+Natural Natural::operator/(const Natural& m) const {
   Natural temp = *this;
   return temp /= m;
 }
@@ -301,12 +301,12 @@ Natural Natural::operator+(const Natural& m) const {
   return temp += m;
 }
 
-Natural Natural::operator-(const Natural& m) {
+Natural Natural::operator-(const Natural& m) const {
   Natural temp = *this;
   return temp -= m;
 }
 
-Natural Natural::operator*(const Natural& m) {
+Natural Natural::operator*(const Natural& m) const {
   Natural temp = *this;
   return temp *= m;
 }

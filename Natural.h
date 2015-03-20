@@ -29,10 +29,10 @@ class Natural {
   Natural& operator--();
   Natural operator--(int);
   Natural operator+(const Natural&) const;
-  Natural operator-(const Natural&);
-  Natural operator*(const Natural&);
-  Natural operator/(const Natural&); 
-  Natural operator%(const Natural&);
+  Natural operator-(const Natural&) const;
+  Natural operator*(const Natural&) const;
+  Natural operator/(const Natural&) const; 
+  Natural operator%(const Natural&) const;
   friend bool operator==(const Natural&, const Natural&);
   friend bool operator!=(const Natural&, const Natural&);
   friend bool operator<=(const Natural&, const Natural&);
