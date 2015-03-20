@@ -8,7 +8,7 @@ void Natural::setZero() {
   n[0] = 0;
 }
 
-Natural::Natural(Block u) {
+void Natural::initWithBlock(Block u) {
   if ( u == 0 ) {
     setZero();
   } else {
@@ -25,6 +25,19 @@ Natural::Natural(Block u) {
     } 
   }
 }   
+
+Natural::Natural(Block u) {
+  initWithBlock(u);
+}
+
+Natural::Natural(int u) {
+  if ( u < 0 ) {
+    u = 0;
+    initWithBlock(static_cast<Block>(u));
+    return;
+  }
+  initWithBlock(static_cast<Block>(u));
+}
 
 Natural::Natural(const char* m, const size_t length) {
   size_t l = ( length <= strlen(m) ) ? length : strlen(m);
@@ -177,8 +190,7 @@ Natural& Natural::operator-=(const Natural& m) {
   }        
 }
 
-Natural& Natural::operator*=(const Natural& m)
-{
+Natural& Natural::operator*=(const Natural& m) {
   if (*this == Natural() || m == Natural()) {
     return *this = Natural();
   }
@@ -250,6 +262,28 @@ Natural& Natural::operator/=(const Natural& m) {
 Natural& Natural::operator%=(const Natural& m) {
     *this = (*this) - ( (*this) / m ) * m;
     return *this;
+}
+
+Natural& Natural::operator++() {
+  this->operator+=(Natural(1));
+  return *this;
+}
+
+Natural Natural::operator++(int a) {
+  Natural tmp(*this);
+  this->operator+=(Natural(1));
+  return tmp;
+}
+
+Natural& Natural::operator--() {
+  this->operator-=(Natural(1));
+  return *this;
+}
+
+Natural Natural::operator--(int a) {
+  Natural tmp(*this);
+  this->operator-=(Natural(1));
+  return tmp;
 }
 
 Natural Natural::operator%(const Natural& m) {

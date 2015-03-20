@@ -14,6 +14,7 @@ typedef uint64_t TwoBlocks;
 class Natural {
  public:
   Natural(Block = 0);
+  Natural(int);
   Natural(const char*, const size_t = std::numeric_limits<size_t>::max());
   Natural(const Natural&);
   ~Natural();
@@ -23,6 +24,10 @@ class Natural {
   Natural& operator*=(const Natural&);
   Natural& operator/=(const Natural&);
   Natural& operator%=(const Natural&);
+  Natural& operator++();
+  Natural operator++(int);
+  Natural& operator--();
+  Natural operator--(int);
   Natural operator+(const Natural&);
   Natural operator-(const Natural&);
   Natural operator*(const Natural&);
@@ -40,6 +45,7 @@ class Natural {
  private:
   class DivisionByZero {}; //Exception
   void setZero();
+  void initWithBlock(Block);
   static Natural tenTo(size_t);
   static Block tenTo(int);
   static Block stringToUInt(const char*, int, int);
