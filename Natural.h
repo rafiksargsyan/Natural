@@ -28,7 +28,7 @@ class Natural {
   Natural operator++(int);
   Natural& operator--();
   Natural operator--(int);
-  Natural operator+(const Natural&);
+  Natural operator+(const Natural&) const;
   Natural operator-(const Natural&);
   Natural operator*(const Natural&);
   Natural operator/(const Natural&); 

@@ -2,12 +2,12 @@
 #include "Natural.h"
 using namespace std;
 
-Natural factorial(const Natural& n) {
-  if ( n == 0 ) {
+Natural factorial(const Natural& n, const Natural& m) {
+  if ( n == 0 || m < n ) {
     return 1;
   }
-  Natural fact(1);
-  for (int i = 2; i <= n; ++i) {
+  Natural fact(n);
+  for (Natural i = n + 1; i <= m; ++i) {
     fact *= i;
   }
   return fact;
@@ -27,10 +27,10 @@ Natural tenTo(const Natural& n) {
 Natural ee(Natural n, Natural precision) {
   Natural e(0);
   for (Natural i = 0; i <= n; ++i) {
-    e += factorial(n) / factorial(i);
+    e += factorial(i + 1, n);
   }
   e *= tenTo(precision);
-  return e / factorial(n);
+  return e / factorial(1, n);
 }
   
 int main()
