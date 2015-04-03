@@ -232,32 +232,106 @@ Natural& Natural::operator*=(const Natural& m) {
   return *this;
 }
 
+void Natural::initWith(const Natural& source, size_t from, size_t to) {
+  delete[] n;
+  while ( source.n[from] == 0 && from != to ) ++from;
+  length = to - from + 1;
+  n = new Block[length];
+  for (size_t i = 0; i < length; ++i) {
+    n[i] = source.n[from + i];
+  }
+}
+
+void Natural::addBlock(const Block& b) {
+  if ( *this == 0 ) {
+    n[0] = b;
+    return;
+  }
+  Block* temp = new Block[length];
+  for ( size_t i = 0; i < length; ++i ) {
+    temp[i] = n[i];
+  }
+  delete[] n;
+  ++length;
+  n = new Block[length];
+  for ( size_t i = 0; i < length - 1; ++i ) {
+    n[i] = temp[i];
+  }
+  delete[] temp;
+  n[length - 1] = b;
+} 
+
+size_t Natural::log(const Block& b) {
+  Block temp = 10;
+  size_t count = 0;
+  while ( temp <= b ) {
+    temp *= 10;
+    ++count;
+  }
+  return count;
+}
+
+Block Natural::divisionHelper(Natural a, const Natural& b, Natural& remainder) {
+  size_t l1;
+  size_t l2;
+  size_t orderDif;
+  if ( a.length == b.length ) {
+    l1 = log(a.n[0]);
+    l2 = log(b.n[0]);
+    if ( l1 < l2 ) {
+      return 0;
+      remainder = a;
+    }
+    orderDif = l1 - l2;
+  } else {
+    orderDif = EXPONENT;
+  }
+  Natural quotient = 0;
+  for (size_t i = orderDif + 1; i >= 1 ; --i) {
+    Natural temp2 = tenTo(i - 1);
+    Natural temp3 = b * temp2;
+    Natural temp4 = 0;
+    while ( temp4 + temp3 <= a ) {
+      temp4 += temp3;
+      quotient += temp2;
+    }
+    a -= temp4;
+  }
+  remainder = a;
+  return quotient.n[0];       
+}
+
 Natural& Natural::operator/=(const Natural& m) {
-  if ( m == Natural(size_t(0)) ) throw DivisionByZero();
+  if ( m == 0 ) throw DivisionByZero();
   if ( *this < m ) {
     delete[] n;
     setZero();
     return *this;
-  } 
-  Natural exp(1);
-  Natural ten(10);
-  size_t i = 0;
-  while ( ( exp * m ) <= *this ) {
-    exp *= ten;
-    ++i;
   }
-  exp = Natural::tenTo(i - 1); 
-  size_t j = 2;
-  while ( exp * Natural(j) * m <= *this ) ++j;
-  exp *= Natural(j - 1);
-  for (size_t k = i - 1; k >= 1; --k) {
-    Natural exp1 = Natural::tenTo(k - 1);
-    size_t j = 1;
-    while ( ( Natural(j) * exp1 + exp ) * m <= *this ) ++j;
-    exp += Natural(j - 1) * exp1;
-  }    
-  return (*this) = exp;   
-}    
+  size_t lengthTemp = length - m.length + 1;
+  Block* quotientTemp = new Block[lengthTemp];
+  Natural temp;
+  temp.initWith(*this, 0, m.length - 1);
+  size_t nextBlockIndex = m.length;
+  size_t i = 0;
+  quotientTemp[i++] = divisionHelper(temp, m, temp);
+  while ( nextBlockIndex < length ) {
+    temp.addBlock(n[nextBlockIndex++]);
+    quotientTemp[i++] = divisionHelper(temp, m, temp); 
+  }
+  delete[] n;
+  if ( quotientTemp[0] ) {
+    length = lengthTemp;
+    n = quotientTemp;
+    return *this;
+  }  
+  length = lengthTemp - 1;
+  n = new Block[length]; 
+  for (size_t i = 0; i < length; ++i) {
+    n[i] = quotientTemp[i + 1];
+  }
+  return *this;
+}
 
 Natural& Natural::operator%=(const Natural& m) {
     *this = (*this) - ( (*this) / m ) * m;
@@ -330,7 +404,7 @@ Block Natural::tenTo(int exp) {
 Block Natural::stringToUInt(const char* m, int i, int j) {
   Block uintNumber = 0;
   for (int k = 0; k <= j - i; ++k) {
-    uintNumber += ( m[j-k] & 0xf ) * Natural::tenTo(k);
+    uintNumber += ( m[j-k] & 0xf ) * tenTo(k);
   }
   return uintNumber;
 }
@@ -338,7 +412,7 @@ Block Natural::stringToUInt(const char* m, int i, int j) {
 Block Natural::stringToUInt(std::string m, int i, int j) {
   Block uintNumber = 0;
   for (int k = 0; k <= j - i; ++k) {
-    uintNumber += ( m[j-k] & 0xf ) * Natural::tenTo(k);
+    uintNumber += ( m[j-k] & 0xf ) * tenTo(k);
   }
   return uintNumber;
 }

@@ -50,9 +50,16 @@ int main()
         cout << "m < n : " << (m < n) << '\n';
         cout << "m > n : " << (m > n) << '\n';
         cout << "m - n : " << (m -= n) << '\n';
-        cout << "m \% n : " << (a %= b) << '\n';
+        cout << "m / n : " << (a /= b) << '\n';
     }*/
-    //cout << factorial(10000);
-    cout << ee(200, 2000) << "\n";
+    //for (int i = 1; i <= 10000; ++i) {
+    //  factorial(1, 1000) / factorial(1, 50);
+    //} 
+    //cout << factorial(1, 10000);
+    cout << ee(1001, 2000) << "\n";
+    /*while ( true ) { 
+      (cin >> m) >> n;
+      cout << m / n << '\n';
+    }*/
     return 0;
 }

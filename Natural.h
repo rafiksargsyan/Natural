@@ -41,11 +41,14 @@ class Natural {
   friend bool operator>(const Natural&, const Natural&);
   friend std::istream& operator>>(std::istream&, Natural&);
   friend std::ostream& operator<<(std::ostream&, const Natural&);
- 
  private:
   class DivisionByZero {}; //Exception
   void setZero();
   void initWithBlock(Block);
+  void initWith(const Natural&, size_t, size_t);
+  void addBlock(const Block&);
+  static size_t log(const Block&);
+  static Block divisionHelper(Natural, const Natural&, Natural&);
   static Natural tenTo(size_t);
   static Block tenTo(int);
   static Block stringToUInt(const char*, int, int);
